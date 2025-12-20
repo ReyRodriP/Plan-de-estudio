@@ -1,0 +1,11 @@
+{
+  "name": "pensum",
+  "version": "1.0.0",
+  "description": "Proyecto donde podremos dar seguimiento a las materias faltantes de la carrera, en honor a alguien especial",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rey",
+  "license": "ISC"
+}

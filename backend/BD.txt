@@ -1,0 +1,34 @@
+-- Tabla de asignaturas
+CREATE TABLE Asignaturas (
+  Id INT PRIMARY KEY,
+  Codigo VARCHAR(10),
+  Nombre VARCHAR(100),
+  Creditos INT,
+  Semestre INT
+);
+
+-- Tabla de prerrequisitos
+CREATE TABLE Requisitos (
+  Id INT PRIMARY KEY,
+  AsignaturaId INT,
+  RequisitoId INT,
+  FOREIGN KEY (AsignaturaId) REFERENCES Asignaturas(Id),
+  FOREIGN KEY (RequisitoId) REFERENCES Asignaturas(Id)
+);
+
+-- Tabla de calificaciones del estudiante
+CREATE TABLE Calificaciones (
+  Id INT PRIMARY KEY,
+  EstudianteId INT,
+  AsignaturaId INT,
+  Calificacion DECIMAL(5,2),
+  Estado VARCHAR(20) -- ('Cursando', 'Aprobada', 'Pendiente')
+);
+
+-- Tabla de estudiantes
+CREATE TABLE Estudiantes (
+  Id INT PRIMARY KEY,
+  Nombre VARCHAR(100),
+  Matricula VARCHAR(20),
+  IndiceGeneral DECIMAL(5,2)
+);

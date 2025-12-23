@@ -3,3 +3,7 @@
 
 #Modulos necesarios
 *mysql2
+*express
+*cors
+*dotenv
+*morgan (Opcional)

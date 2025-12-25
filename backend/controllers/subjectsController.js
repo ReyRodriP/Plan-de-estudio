@@ -1,74 +1,91 @@
 import { pool } from '../models/connection.js'
+import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura } from '../models/subjectsModel.js'
 
-const getSubject = async (req, res) => {
+export const getSubject = async (req, res) => {
     try {
-        const [result] = await pool.query('SELECT * FROM asignaturas')
-        res.json(result.recordset)
-        console.log(result)
+        const asignaturas = await ListarAsignaturas()
+        res.json(asignaturas)
     } catch (err) {
         console.log(err)
     }
 }
 
-const getByIdSubject = async (req, res) => {
+export const getByIdSubject = async (req, res) => {
     try {
         const { id } = req.params
-        const [result] = await pool.query(`SELECT * FROM asignaturas WHERE Id = ?`, [id])
+        const asignaturasId = await ListarAsignaturasPorId(id)
 
-        if(result.length == 0) {
-            res.status(404).json('No encontrado')
-        } else{ 
-           return res.json(result[0])
-        }      
+    if(asignaturasId.length == 0) {
+       return res.status(404).json({ Mensaje: 'No encontrado' })
+    } else { 
+        return res.json(asignaturasId[0])
+    }  
+
     } catch (err) {
         console.log(err)
         res.status(400)
     }
 }
 
-const addSubject = async (req, res) => {
-    try {
-        const { Id, Codigo, Nombre, Creditos, Semestre } = req.body
-        const result = await pool.query('INSERT INTO asignaturas (Id, Codigo, Nombre, Creditos, Semestre) values (?, ?, ?, ?, ?)', [Id, Codigo, Nombre, Creditos, Semestre]);
+export const readySubject = async (req, res) => {
+    try { 
+        const { id } = req.params
+        const { completada, calificacion } = req.body
+        const result = await CompletarAsignatura(completada, calificacion, id )
 
-        res.json("Insertado correctamente")
+        // if (result.affectedRows === 0) {
+        //      return res.status(404).json({"Mensaje": "No fue encontrado"})
+        // }
+
+        res.json({"Mensaje": `Mision cumplida, se altero la fila ${id}`})
+
     } catch (err) {
+        res.status(500).json({'Mensaje': err})
         console.log(err)
     }
 }
+//Funciones para usar a futuro
 
-const updSubject = async (req, res) => {
-    try {
-        const { id } = req.params
-        const { Codigo, Nombre, Creditos, Semestre } = req.body
-        const [result] = await pool.query('UPDATE asignaturas SET Codigo = ?, Nombre = ?, Creditos = ?, Semestre = ? WHERE id = ?', [ Codigo, Nombre, Creditos, Semestre, id])
+// export const addSubject = async (req, res) => {
+//     try {
+//         const { Id, Codigo, Nombre, Creditos, Semestre } = req.body
+//         const result = await pool.query('INSERT INTO asignaturas (Id, Codigo, Nombre, Creditos, Semestre) values (?, ?, ?, ?, ?)', [Id, Codigo, Nombre, Creditos, Semestre]);
 
-       if (result.affectedRows === 0) {
-             return res.status(404).json({"Mensaje": "No fue encontrado"})
-        }
+//         res.json("Insertado correctamente")
+//     } catch (err) {
+//         console.log(err)
+//     }
+// }
 
-        res.json({"Mensaje": `Mision cumplida, se altero la fila ${id}`})
-    } catch (err) {
-        res.status(500).json({"Mensaje": err})
-    }
-}
 
-const delSubject = async (req, res) => {
-    try {
-        const { id } = req.params
-        const [result] = await pool.query("DELETE FROM asignaturas WHERE id = ?", [id])
+// export const updSubject = async (req, res) => {
+//     try {
+//         const { id } = req.params
+//         const { Codigo, Nombre, Creditos, Semestre } = req.body
+//         const [result] = await pool.query('UPDATE asignaturas SET Codigo = ?, Nombre = ?, Creditos = ?, Semestre = ? WHERE id = ?', [ Codigo, Nombre, Creditos, Semestre, id])
 
-        if (result.affectedRows === 0) {
-             return res.status(404).json({"Mensaje": "No fue encontrado"})
-        }
+//        if (result.affectedRows === 0) {
+//              return res.status(404).json({"Mensaje": "No fue encontrado"})
+//         }
 
-        res.json({"Mensaje": "Elemento eliminado correctamente"})
+//         res.json({"Mensaje": `Mision cumplida, se altero la fila ${id}`})
+//     } catch (err) {
+//         res.status(500).json({"Mensaje": err})
+//     }
+// }
+
+// export const delSubject = async (req, res) => {
+//     try {
+//         const { id } = req.params
+//         const [result] = await pool.query("DELETE FROM asignaturas WHERE id = ?", [id])
+
+//         if (result.affectedRows === 0) {
+//              return res.status(404).json({"Mensaje": "No fue encontrado"})
+//         }
+
+//         res.json({"Mensaje": "Elemento eliminado correctamente"})
          
-    } catch (err) {
-        res.status(500).json({"Mensaje": err})
-    }
-}
-
-export { getSubject, getByIdSubject, addSubject, updSubject, delSubject }
-
-
+//     } catch (err) {
+//         res.status(500).json({"Mensaje": err})
+//     }
+// }

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getSubject, getByIdSubject, addSubject, updSubject, delSubject } from "../controllers/subjectsController.js"
+import { getSubject, getByIdSubject, readySubject/*, addSubject, updSubject, delSubject*/ } from "../controllers/subjectsController.js"
 
 const router = Router();
 
@@ -7,10 +7,12 @@ router.get('/subject', getSubject)
 
 router.get('/subject/:id', getByIdSubject)
 
-router.post('/subject', addSubject)
+router.put('/subject/:id', readySubject)
 
-router.put('/subject/:id', updSubject)
+// router.post('/subject', addSubject)
 
-router.delete('/subject/:id', delSubject)
+// router.put('/subject/:id', updSubject)
+
+// router.delete('/subject/:id', delSubject)
 
 export default router;

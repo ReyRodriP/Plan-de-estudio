@@ -1,3 +1,170 @@
-table,th,tbody,tr {
-    border: 1px solid #111;
+:root { /*Variables a usar*/
+  --color-mainrow: #003366;   
+  --color-secondrow: #0077cc;
+  --color-rows: #f8f9fb;
+  --color-columns: #dcdcdc; 
+  --font-main: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+}
+
+table { 
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%; 
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+td, th, caption {
+    padding: 1rem;
+    border: 1px solid var(--color-colunms);
+}
+
+td, th { 
+    border: 1px solid var(--color-columns);
+    padding: 0.9rem;
+}
+
+th {  
+    text-align: left;
+}
+
+caption { 
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: var(--color-mainrow);
+    color: #fff;
+    padding: 1.2rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+th {
+    background-color: var(--color-secondrow);
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+tr:nth-of-type(2n) {
+    background-color: var(--color-rows);
+}
+
+tbody tr:hover {
+  background-color: rgba(0, 119, 204, 0.1);
+  transition: 0.3s;
+}
+
+.table-container {
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
+button {
+    font-size: 2.3vh;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    background-color: var(--color-secondrow);
+    margin: 3px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+    cursor: pointer;
+}
+
+button:hover {
+  background-color: #005fa3;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Cuando una materia esta publicada */
+.finished {
+    color: #2e7d32; 
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+
+/*Movil: Mejorar a futuro*/
+@media (max-width: 650px) {
+    th {
+        display: none;
+    }
+
+    td {
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: 15ch auto;
+        padding: 0.5rem 1rem;
+    }
+
+    td:last-child {
+        display: block; 
+  }
+
+  .options {
+        display: flex;
+        justify-content: flex-start;
+        gap: 6px;
+        flex-wrap: wrap;
+  }
+
+  button {
+        width: 32px;
+        height: 32px;
+        font-size: 1.8vh;
+  }
+
+    td:first-child {
+        padding-top: 2rem;
+    }
+
+    td:last-child {
+        padding-bottom: 2rem;
+    }
+
+    td::before {
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    td:nth-of-type(1)::before {
+        content: "Clave";
+    }
+
+    td:nth-of-type(2)::before {
+        content: "Asignatura";
+    }
+
+    td:nth-of-type(3)::before {
+        content: "Horas Teóricas";
+    }
+
+    td:nth-of-type(4)::before {
+        content: "Horas Prácticas";
+    }
+
+    td:nth-of-type(5)::before {
+        content: "Créditos";
+    }
+
+    td:nth-of-type(6)::before {
+        content: "Opciones";
+    }
 }

@@ -1,8 +1,17 @@
 import { Router } from "express";
-import { getSubject, getByIdSubject, readySubject/*, addSubject, updSubject, delSubject*/ } from "../controllers/subjectsController.js"
+import { getSubject, getByIdSubject, readySubject, Register, logIn/*, addSubject, updSubject, delSubject*/ } from "../controllers/subjectsController.js"
 
 const router = Router();
 
+router.post('/login', logIn)
+
+router.post('/register', Register)
+
+// router.post('/logout', )
+
+// router.get('/protected', )
+
+//Rutas de las materias
 router.get('/subject', getSubject)
 
 router.get('/subject/:id', getByIdSubject)

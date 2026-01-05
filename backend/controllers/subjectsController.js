@@ -1,5 +1,63 @@
 import { pool } from '../models/connection.js'
-import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura } from '../models/subjectsModel.js'
+import bcrypt, { hash } from 'bcrypt'
+import JsonWebToken from 'jsonwebtoken'
+import dotenv from 'dotenv'
+import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura, registrarEstudiantes, loginEstudiantes } from '../models/subjectsModel.js'
+
+dotenv.config();
+
+export const Register = async (req, res) => {
+  try {
+    const { nombre, matricula, correo, contrasena } = req.body;
+    const salt = await bcrypt.genSalt(5);
+
+    if (!nombre || !matricula || !correo || !contrasena) {
+      return res.status(400).json({ Mensaje: "Llena todos los campos" });
+    }
+
+    if (nombre.length < 3) {
+      return res.status(400).json({ Mensaje: "Nombre demasiado corto" });
+    }
+    //Recordar el manejo de que no se repitan correos o matriculas
+    const hashcontrasena = await bcrypt.hash(contrasena, salt);
+    const insertarEstudiante = await registrarEstudiantes(nombre, matricula, correo, hashcontrasena);
+  
+    res.json({ Mensaje: "Estudiante nuevo registrado", IdInsertado: insertarEstudiante.insertId });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ Message: "Error al registrar estudiante" });
+  }
+};
+
+export const logIn = async (req, res) => {
+  try {
+    const { correo, contrasena } = req.body
+    const logear = await loginEstudiantes(correo)
+
+    if(logear == '') return res.status(500).json({Mensaje: 'Correo o contraseña incorrecta'});
+
+    const validPassword = await bcrypt.compare(contrasena, logear[0].contrasena)
+    if(!validPassword) return res.status(500).json({Mensaje: 'Correo o contraseña incorrecta'});
+
+    const token = JsonWebToken.sign(
+      {user:logear[0].nombre}, //Declaramos el usuario
+      process.env.JWT_SECRET, //Pasamos la clave del .env
+      {expiresIn: process.env.JWT_EXPIRETIME}) //EL tiempo para que expire el token
+    
+    const cookieOptions = {
+      expires: new Date (Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000), //Para conversion en dias
+      path: "/"
+    } 
+
+    res.cookie("jwt", token, cookieOptions)
+    res.status(200).json({Mensaje: "Usuario logeado", redirect:'/subject'})
+
+  } catch(err) {
+    res.status(500).json({Mensaje: err})
+    console.log(err)
+  }
+}
 
 export const getSubject = async (req, res) => {
     try {
@@ -37,10 +95,10 @@ export const readySubject = async (req, res) => {
         //      return res.status(404).json({"Mensaje": "No fue encontrado"})
         // }
 
-        res.json({"Mensaje": `Mision cumplida, se altero la fila ${id}`})
+        res.json({Mensaje: `Mision cumplida, se altero la fila ${id}`})
 
     } catch (err) {
-        res.status(500).json({'Mensaje': err})
+        res.status(500).json({Mensaje: err})
         console.log(err)
     }
 }

@@ -1,34 +1,53 @@
--- Tabla de asignaturas
-CREATE TABLE Asignaturas (
-  Id INT PRIMARY KEY,
-  Codigo VARCHAR(10),
-  Nombre VARCHAR(100),
-  Creditos INT,
-  Semestre INT
+-- ===============================
+-- TABLA DE USUARIOS / ESTUDIANTES
+-- ===============================
+CREATE TABLE estudiantes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  matricula VARCHAR(20) NOT NULL UNIQUE,
+  correo VARCHAR(100) NOT NULL UNIQUE,
+  contrasena VARCHAR(255) NOT NULL, -- se guardará encriptada
+  indice_general DECIMAL(5,2) DEFAULT 0.00,
+  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de prerrequisitos
-CREATE TABLE Requisitos (
-  Id INT PRIMARY KEY,
-  AsignaturaId INT,
-  RequisitoId INT,
-  FOREIGN KEY (AsignaturaId) REFERENCES Asignaturas(Id),
-  FOREIGN KEY (RequisitoId) REFERENCES Asignaturas(Id)
+-- ===============================
+-- TABLA DE ASIGNATURAS
+-- ===============================
+CREATE TABLE asignaturas (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  codigo VARCHAR(10) NOT NULL UNIQUE,
+  nombre VARCHAR(100) NOT NULL,
+  semestre INT NOT NULL,
+  horas_teoricas INT DEFAULT 0,
+  horas_practicas INT DEFAULT 0,
+  creditos INT DEFAULT 0
 );
 
--- Tabla de calificaciones del estudiante
-CREATE TABLE Calificaciones (
-  Id INT PRIMARY KEY,
-  EstudianteId INT,
-  AsignaturaId INT,
-  Calificacion DECIMAL(5,2),
-  Estado VARCHAR(20) -- ('Cursando', 'Aprobada', 'Pendiente')
+-- ===============================
+-- TABLA DE REQUISITOS
+-- (Relación muchos a muchos entre asignaturas)
+-- ===============================
+CREATE TABLE requisitos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  asignatura_id INT NOT NULL,
+  requisito_id INT NOT NULL,
+  FOREIGN KEY (asignatura_id) REFERENCES asignaturas(id) ON DELETE CASCADE,
+  FOREIGN KEY (requisito_id) REFERENCES asignaturas(id) ON DELETE CASCADE,
+  CONSTRAINT uc_requisito UNIQUE (asignatura_id, requisito_id)
 );
 
--- Tabla de estudiantes
-CREATE TABLE Estudiantes (
-  Id INT PRIMARY KEY,
-  Nombre VARCHAR(100),
-  Matricula VARCHAR(20),
-  IndiceGeneral DECIMAL(5,2)
+-- ===============================
+-- TABLA DE CALIFICACIONES
+-- (Vincula estudiantes con asignaturas)
+-- ===============================
+CREATE TABLE calificaciones (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  estudiante_id INT NOT NULL,
+  asignatura_id INT NOT NULL,
+  calificacion DECIMAL(5,2) DEFAULT NULL,
+  completada BOOLEAN DEFAULT 0,
+  FOREIGN KEY (estudiante_id) REFERENCES estudiantes(id) ON DELETE CASCADE,
+  FOREIGN KEY (asignatura_id) REFERENCES asignaturas(id) ON DELETE CASCADE,
+  CONSTRAINT uc_calificacion UNIQUE (estudiante_id, asignatura_id)
 );

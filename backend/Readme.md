@@ -6,4 +6,5 @@
 *express
 *cors
 *dotenv
+*bcrypt
 *morgan (Opcional)

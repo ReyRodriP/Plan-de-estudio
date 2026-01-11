@@ -4,17 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="icon" href="../ASSETS/FC.png">
     <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <title>UASD-Pensum</title>
 </head>
 <body>
     <header>
+        <nav class="navbar">
+            <div class="nav-left">
+            <div class="nav-logo">
+                <img src="../ASSETS/UASD-Logo.png" alt="Logo UASD" class="logo-uasd">
+                <div class="nav-text">
+                <h2>Universidad Autónoma de Santo Domingo</h2>
+                <h3>Primada de América</h3>
+                <h4>Facultad de Ciencias</h4>
+                </div>
+            </div>
+            </div>
 
+            <div class="nav-right">
+            <div class="profile close">
+                <img src="../ASSETS/TheBoss.webp" alt="perfil de usuario" class="profile-pic" id="profile-image">
+            </div>
+            </div>
+        </nav>
     </header>
 
+
     <main>
+        <div class="modal-background modal-close" id="modal-background">
+            <div class="modal-container">
+                <div class="modal-content">
+                    <span id="close-btn">X</span>
+                    <img src="../ASSETS/TheBoss.webp" alt="Foto de perfil">
+                    <h3>Hola <!--Aqui ira el nombre de usauario--></h3>
+                    <!-- Aqui ira grafica de pie con progreso aqui -->
+                    <button class="logout" id="logout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
         <div class="wrapper">
-            <h1>Inicio</h1>
             <div class="table-container">
                 <table>
                     <caption>Plan de estudios - Licenciatura en Informática</caption>

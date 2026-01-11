@@ -1,9 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
 :root { /*Variables a usar*/
   --color-mainrow: #003366;   
   --color-secondrow: #0077cc;
   --color-rows: #f8f9fb;
   --color-columns: #dcdcdc; 
   --font-main: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+/*Estilo para el navbar*/
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #003366 0%, #0077cc 100%);
+  padding: 0.8rem 2rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Lado del logo*/
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-uasd {
+  height: 55px;
+  width: auto;
+}
+
+.nav-text h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: 'UnifrakturMaguntia', serif;
+}
+
+.nav-text h3 {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.nav-text h4 {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #dce9f7;
+}
+
+/* Lado del perfil */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Imagen de perfil */
+.profile-pic {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.1);
+}
+
+/* ======== MODO RESPONSIVO ======== */
+@media (max-width: 850px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+  }
+}
+/* --------- MODAL ----------*/
+
+/* Fondo semi-transparente */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* Estado cerrado */
+.modal-close {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Contenedor del modal */
+.modal-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 450px;
+  padding: 2rem;
+  animation: fadeIn 0.4s ease;
+  position: relative;
+}
+
+/* Contenido */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: center;
+}
+
+.modal-content img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--color-secondrow);
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(0, 119, 204, 0.4);
+}
+
+.modal-content span:first-child {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 26px;
+  height: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.modal-content span:first-child:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.modal-content h3 {
+  font-size: 1.5rem;
+  color: var(--color-mainrow);
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* Botón de cerrar sesión */
+.logout {
+  background: var(--color-secondrow);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-top: 1.5rem;
+}
+
+.logout:hover {
+  background: #005fa3;
+  transform: translateY(-2px);
+}
+
+/* Animación al aparecer */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+  .modal-container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .modal-content img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .modal-content h3 {
+    font-size: 1.2rem;
+  }
 }
 
 body {
@@ -14,7 +246,6 @@ table {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%; 
-    border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     overflow: hidden;
 }
@@ -41,8 +272,6 @@ caption {
     padding: 1.2rem;
     text-align: center;
     letter-spacing: 0.5px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
 }
 
 th {
@@ -92,6 +321,7 @@ button:hover {
   flex-wrap: wrap;
   justify-content: center;
 }
+
 
 /* Cuando una materia esta publicada */
 .finished {

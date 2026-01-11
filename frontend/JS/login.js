@@ -7,7 +7,7 @@ const log = async (event) => {
     event.preventDefault()
     if(password.value.length < 5) return alert('Contraseña invalida') //Poner mas validaciones y mejorar estilo a futuro
 
-    const res = await fetch(apiUrl, option = {
+    const res = await fetch(apiUrl, options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ "correo": email.value, "contrasena": password.value}),

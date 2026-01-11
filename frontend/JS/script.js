@@ -1,5 +1,9 @@
 const subjects = document.getElementById('data_subjects')
-const apiUrl = "http://localhost:3000/subject"
+const apiUrl = "http://localhost:3000/subject" 
+const modal = document.getElementById('modal-background');
+const profileBtn = document.getElementById('profile-image');
+const closeBtn = document.getElementById('close-btn');
+const closeAccount = document.getElementById('logout')
 
 const options = {
     method: "GET"
@@ -81,4 +85,28 @@ async function showGrades(id) {
     .then(response => console.log(response)) //Llamada a la api para el PUT
 
     location.reload()
+}
+
+//Manejo del modal
+profileBtn.addEventListener('click', openModal);
+closeBtn.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    closeModal();
+  }
+});
+
+function openModal() {
+  modal.classList.remove('modal-close');
+}
+
+function closeModal() {
+  modal.classList.add('modal-close');
+}
+
+//Cerrar sesion
+closeAccount.addEventListener('click', sesionClosed)
+function sesionClosed() {
+  document.cookie = 'jwt=; path=/; Expires=Mon, 01 Jan 2000 00:00:01 GMT;';
+  window.location.href = 'login.html';
 }

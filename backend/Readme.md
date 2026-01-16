@@ -7,4 +7,5 @@
 *cors
 *dotenv
 *bcrypt
+*cookie-parser
 *morgan (Opcional)

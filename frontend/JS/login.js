@@ -19,8 +19,7 @@ const log = async (event) => {
       return;
     }
     
-    window.location.href = 'index.html'
-
+    window.location.href = 'index'
 }
 
 loginBtn.addEventListener('click', log)

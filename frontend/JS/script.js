@@ -108,5 +108,5 @@ function closeModal() {
 closeAccount.addEventListener('click', sesionClosed)
 function sesionClosed() {
   document.cookie = 'jwt=; path=/; Expires=Mon, 01 Jan 2000 00:00:01 GMT;';
-  window.location.href = 'login.html';
+  window.location.href = '/';
 }

@@ -25,7 +25,7 @@ const registerStudent = async (event) => {
     .then(res => res.json())
     .then(response => response)
 
-    window.location.href = 'login.html'
+    window.location.href = '/'
 }
 
 register.addEventListener('click', registerStudent)

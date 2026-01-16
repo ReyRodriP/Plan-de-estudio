@@ -1,17 +1,22 @@
 import { Router } from "express";
 import { getSubject, getByIdSubject, readySubject, Register, logIn/*, addSubject, updSubject, delSubject*/ } from "../controllers/subjectsController.js"
-
+import { viewLogin, viewSubjects, viewRegister } from "../controllers/viewsController.js";
+import { onlyAdmin, onlyPublic } from "../middlewares/authorization.js";
 const router = Router();
 
+//Rutas del proyecto
+router.get('/', onlyPublic, viewLogin);
+
+router.get('/index', onlyAdmin, viewSubjects);
+
+router.get('/register', onlyPublic, viewRegister);
+
+//Endpoints del login y register
 router.post('/login', logIn)
 
 router.post('/register', Register)
 
-// router.post('/logout', )
-
-// router.get('/protected', )
-
-//Rutas de las materias
+//Endpoints de las materias
 router.get('/subject', getSubject)
 
 router.get('/subject/:id', getByIdSubject)

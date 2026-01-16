@@ -3,4 +3,11 @@ import app from './app.js'
 app.listen(process.env.PORT || 3000)
 console.log('Prueba 1 del server')
 
+const palabras = "Este es un conjunto de palabra para probar";
+
+
+
+
+
+
 

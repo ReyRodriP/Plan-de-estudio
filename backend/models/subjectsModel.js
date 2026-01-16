@@ -10,6 +10,11 @@ export const loginEstudiantes = async (correo) => {
     return result 
 }
 
+export const userSesion = async (nombre) => {
+    const [result] = await pool.query('SELECT * FROM estudiantes WHERE nombre = ?', [nombre])
+    return result
+}
+
 export const ListarAsignaturas = async () => {
     const [result] = await pool.query('SELECT * FROM asignaturas')
     return result

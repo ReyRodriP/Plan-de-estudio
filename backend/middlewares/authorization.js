@@ -5,7 +5,7 @@ import { userSesion } from '../models/subjectsModel.js'
 
 export const onlyPublic = async (req, res, next) => {
     if(await userValidation(req) == false) return next()
-    res.redirect('index')
+    res.redirect('index') 
 }
 
 export const onlyAdmin = async (req, res, next) => {
@@ -16,7 +16,7 @@ export const onlyAdmin = async (req, res, next) => {
 const userValidation = async (req) => {
      try {
         const cookie = req.headers.cookie
-        if(!cookie) return 
+        if(!cookie) return false
         const cleanCookie = cookie.substring(4)
         
         const preCookie = jwt.verify(cleanCookie, process.env.JWT_SECRET)
@@ -25,8 +25,6 @@ const userValidation = async (req) => {
         if(result[0].nombre === preCookie.user) {
             return true
         } 
-
-        return false
     } catch(err) {
         console.log({"Mensaje:": err})
     }

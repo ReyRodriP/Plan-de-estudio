@@ -61,7 +61,8 @@ export const logIn = async (req, res) => {
 
 export const getSubject = async (req, res) => {
     try {
-        const asignaturas = await ListarAsignaturas()
+      const { id } = req.params
+        const asignaturas = await ListarAsignaturas(id)
         res.json(asignaturas)
     } catch (err) {
         console.log(err)

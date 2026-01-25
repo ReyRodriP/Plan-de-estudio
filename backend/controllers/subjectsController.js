@@ -43,15 +43,17 @@ export const logIn = async (req, res) => {
     const token = JsonWebToken.sign(
       {user:logear[0].nombre}, //Declaramos el usuario
       process.env.JWT_SECRET, //Pasamos la clave del .env
-      {expiresIn: process.env.JWT_EXPIRETIME}) //EL tiempo para que expire el token
-    
+      {expiresIn: process.env.JWT_EXPIRETIME})//EL tiempo para que expire el token 
+      
     const cookieOptions = {
       expires: new Date (Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000), //Para conversion en dias
       path: "/"
     } 
-
     res.cookie("jwt", token, cookieOptions)
-    res.status(200).json({Mensaje: "Usuario logeado", redirect:'/subject'})
+    res.status(200).json({
+      Mensaje: "Usuario logeado", 
+      usuario: {id: logear[0].id, nombre: logear[0].nombre, correo: logear[0].correo},
+      redirect:`/subjects/${logear[0].id}`})
 
   } catch(err) {
     res.status(500).json({Mensaje: err})
@@ -60,13 +62,14 @@ export const logIn = async (req, res) => {
 }
 
 export const getSubject = async (req, res) => {
-    try {
-      const { id } = req.params
-        const asignaturas = await ListarAsignaturas(id)
-        res.json(asignaturas)
-    } catch (err) {
-        console.log(err)
-    }
+  try {
+    const { id } = req.params
+    const asignaturas = await ListarAsignaturas(id);
+    res.json(asignaturas);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ mensaje: "Error al obtener asignaturas" });
+  }
 }
 
 export const getByIdSubject = async (req, res) => {

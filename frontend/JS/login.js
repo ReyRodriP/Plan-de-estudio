@@ -14,10 +14,14 @@ const log = async (event) => {
         credentials: "include" 
     })
 
+    const data = await res.json();
+
      if (!res.ok) {
       alert(data.Mensaje || "Error al iniciar sesión");
       return;
     }
+
+    localStorage.setItem("usuario", JSON.stringify(data.usuario)); //Mejorar seguridad a futuro, comparar id con el token
     
     window.location.href = 'index'
 }

@@ -17,7 +17,7 @@ router.post('/login', logIn)
 router.post('/register', Register)
 
 //Endpoints de las materias
-router.get('/subject', getSubject)
+router.get('/subjects/:id', getSubject)
 
 router.get('/subject/:id', getByIdSubject)
 

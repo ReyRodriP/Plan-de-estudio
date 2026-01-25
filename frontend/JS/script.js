@@ -1,90 +1,127 @@
-const subjects = document.getElementById('data_subjects')
-const apiUrl = "http://localhost:3000/subject" 
+const subjects = document.getElementById('data_subjects');
+const user = JSON.parse(localStorage.getItem('usuario'));
+const apiUrl = `http://localhost:3000/subjects/${user.id}`; 
 const modal = document.getElementById('modal-background');
 const profileBtn = document.getElementById('profile-image');
 const closeBtn = document.getElementById('close-btn');
-const closeAccount = document.getElementById('logout')
+const closeAccount = document.getElementById('logout');
 
-const options = {
-    method: "GET"
-}
+const options = { method: "GET" };
 
 fetch(apiUrl, options)
-.then(res => res.json())
-.then(response => showInfo(response))
+  .then(res => res.json())
+  .then(response => showInfo(response));
 
+
+let lastSemester = null;
+let currentSemesterRows = [];
 
 function showInfo(response) {
-    subjects.innerText = "" //Para vaciar contenido
+  subjects.innerHTML = "";
 
-    response.map((a) => {
-        //Filas a generar
-        const row = document.createElement('tr')
+  // Asegurar que esté ordenado por semestre
+  response.sort((a, b) => a.semestre - b.semestre);
 
-        const code = document.createElement('td')
-        code.innerText = a.codigo
+  response.forEach((a, index) => {
+    // Si cambia el semestre, crear encabezado
+    if (a.semestre !== lastSemester) {
+      lastSemester = a.semestre;
 
-        const name = document.createElement('td')
-        name.innerText = a.nombre
+      // Si hay filas acumuladas del semestre anterior, limpiarlas
+      currentSemesterRows = [];
 
-        const teoricHours = document.createElement('td')
-        teoricHours.innerText = a.horas_teoricas 
+      // Crear encabezado de semestre
+      const semesterRow = document.createElement('tr');
+      const semesterHeader = document.createElement('th');
+      semesterHeader.colSpan = 7;
+      semesterHeader.innerText = `Semestre ${a.semestre}`;
+      semesterHeader.classList.add('semester-header');
+      semesterRow.appendChild(semesterHeader);
 
-        const practicHours = document.createElement('td')
-        practicHours.innerText = a.horas_practicas
+      // Asignar dataset con el número del semestre
+      semesterRow.dataset.semestre = a.semestre;
+      subjects.appendChild(semesterRow);
+      semesterRow.classList.add('semester-header-row');
 
-        const credits = document.createElement('td')
-        credits.innerText = a.creditos
+    }
 
-        const grades = document.createElement('td')
-        grades.innerText = a.calificacion 
-        if(grades.innerText.trim() !== '') row.classList.add('finished') //Para cambiar estilo al tener nota
+    // Crear fila de asignatura
+    const row = document.createElement('tr');
+    row.dataset.semestre = a.semestre; // para agrupar visualmente
 
-        //Seccion de opciones
-        const options = document.createElement('td')
-        const button1 = document.createElement('button')
-        button1.classList.add('bx', 'bx-pencil-sparkles')
-        button1.title = "Inscribir"
+    const code = document.createElement('td');
+    code.innerText = a.codigo;
 
-        const button2 = document.createElement('button')
-        button2.classList.add('bx', 'bx-seal-check')
-        button2.title = `Publicar`
-        button2.addEventListener('click', () => { showGrades(a.id)}) 
+    const name = document.createElement('td');
+    name.innerText = a.nombre_asignatura;
 
-        const button3 = document.createElement('button')
-        button3.classList.add('bx', 'bx-rotate-ccw')  
-        button3.title = "Reiniciar"
+    const teoricHours = document.createElement('td');
+    teoricHours.innerText = a.horas_teoricas;
 
-        options.appendChild(button1)
-        options.appendChild(button2)
-        options.appendChild(button3)
+    const practicHours = document.createElement('td');
+    practicHours.innerText = a.horas_practicas;
 
-        //Agregamos todo a la tabla
-        row.appendChild(code)
-        row.appendChild(name)
-        row.appendChild(teoricHours)
-        row.appendChild(practicHours)
-        row.appendChild(credits)
-        row.appendChild(grades)
-        row.append(options)
+    const credits = document.createElement('td');
+    credits.innerText = a.creditos;
 
-        subjects.appendChild(row)
-    })     
+    const grades = document.createElement('td');
+    grades.innerText = a.calificacion;
+    if (grades.innerText.trim() !== "") row.classList.add('finished');
+
+    const options = document.createElement('td');
+    const button1 = document.createElement('button');
+    button1.classList.add('bx', 'bx-pencil-sparkles');
+    button1.title = "Inscribir";
+
+    const button2 = document.createElement('button');
+    button2.classList.add('bx', 'bx-seal-check');
+    button2.title = "Publicar";
+    button2.addEventListener('click', () => showGrades(a.id));
+
+    const button3 = document.createElement('button');
+    button3.classList.add('bx', 'bx-rotate-ccw');
+    button3.title = "Reiniciar";
+
+    options.append(button1, button2, button3);
+    row.append(code, name, teoricHours, practicHours, credits, grades, options);
+
+    subjects.appendChild(row);
+  });
 }
 
+// --- Fila retráctil ---
+document.addEventListener('click', (e) => {
+  // Si el clic fue sobre un encabezado de semestre
+  if (e.target.classList.contains('semester-header')) {
+    const header = e.target;
+    const semestre = header.parentElement.dataset.semestre;
+
+    // Buscar todas las filas con ese semestre, excepto la del encabezado
+    const rows = document.querySelectorAll(
+      `tr[data-semestre="${semestre}"]:not(.semester-header-row)`
+    );
+
+    // Ver si las filas ya están ocultas
+    const isHidden = rows[0]?.classList.contains('hidden');
+
+    // Alternar visibilidad
+    rows.forEach(row => row.classList.toggle('hidden', !isHidden));
+    header.classList.toggle('open', !isHidden);
+  }
+});
+
+// --- Publicar calificaciones ---
 async function showGrades(id) {
-    let cal = prompt('Ingresa la calificacion final')
-    if(!cal) return;
+  const cal = prompt('Ingresa la calificación final');
+  if (!cal) return;
 
-    await fetch(apiUrl+`/${id}`, {
-        method: "PUT", 
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "completada": 1, "calificacion": `${parseFloat(cal)}`})
-    })
-    .then(res => res.json())
-    .then(response => console.log(response)) //Llamada a la api para el PUT
+  await fetch(apiUrl + `${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ completada: 1, calificacion: parseFloat(cal) })
+  });
 
-    location.reload()
+  location.reload();
 }
 
 //Manejo del modal

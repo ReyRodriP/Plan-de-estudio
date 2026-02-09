@@ -128,3 +128,272 @@ VALUES
 ('INF-5280', 'Comercio Electrónico', 13, 3, 2, 4),
 ('MAT-3930', 'Teoría de las Probabilidades', 13, 3, 2, 4);
 
+========================================
+--Insercion de Prerrequisitos
+========================================
+
+-- INF-5100 requiere INF-2060 y INF-2070
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asigrequisitosnaturas WHERE codigo = 'INF-5100'), (SELECT id FROM asignaturas WHERE codigo = 'INF-2060')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5100'), (SELECT id FROM asignaturas WHERE codigo = 'INF-2070'));
+
+-- INF-5110 requiere INF-5100, INF-2060 y INF-2070
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5110'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5100')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5110'), (SELECT id FROM asignaturas WHERE codigo = 'INF-2060')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5110'), (SELECT id FROM asignaturas WHERE codigo = 'INF-2070'));
+
+-- LET-0120 requiere LET-0110
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'LET-0120'), (SELECT id FROM asignaturas WHERE codigo = 'LET-0110'));
+
+-- IDI-0130 requiere IDI-0280
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'IDI-0130'), (SELECT id FROM asignaturas WHERE codigo = 'IDI-0280'));
+
+-- INF-5120 requiere INF-5100 y INF-5110
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5120'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5100')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5120'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5110'));
+
+-- INF-5130 requiere INF-5120, INF-5100 y INF-5110
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5130'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5120')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5130'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5100')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5130'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5110'));
+
+-- MAT-2330 requiere MAT-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-2330'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-0140'));
+
+-- FIS-1150 requiere FIS-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'FIS-1150'), (SELECT id FROM asignaturas WHERE codigo = 'FIS-0140'));
+
+-- FIS-1160 requiere FIS-0140 y FIS-1150
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'FIS-1160'), (SELECT id FROM asignaturas WHERE codigo = 'FIS-0140')),
+((SELECT id FROM asignaturas WHERE codigo = 'FIS-1160'), (SELECT id FROM asignaturas WHERE codigo = 'FIS-1150'));
+
+-- INF-5140 requiere INF-5120 y INF-5130
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5140'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5120')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5140'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5130'));
+
+-- INF-5150 requiere INF-5140, INF-5120 y INF-5130
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5150'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5140')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5150'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5120')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5150'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5130'));
+
+-- INF-5260 requiere INF-5120
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5260'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5120'));
+
+-- MAT-3560 requiere MAT-2330
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3560'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-2330'));
+
+-- EST-2110 requiere MAT-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'EST-2110'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-0140'));
+
+-- INF-2080 requiere INF-2060
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-2080'), (SELECT id FROM asignaturas WHERE codigo = 'INF-2060'));
+
+-- INF-5160 requiere INF-5140 y INF-5150
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5160'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5140')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5160'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5150'));
+
+-- INF-5170 requiere INF-5160, INF-5140 y INF-5150
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5170'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5160')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5170'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5140')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5170'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5150'));
+
+-- MAT-3570 requiere MAT-3560
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3570'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-3560'));
+
+-- CON-1190 requiere MAT-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'CON-1190'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-0140'));
+
+-- INF-3220 requiere INF-5120 y MAT-3570
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-3220'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5120')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-3220'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-3570'));
+
+-- INF-3240 requiere INF-2080
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-3240'), (SELECT id FROM asignaturas WHERE codigo = 'INF-2080'));
+
+-- INF-4200 requiere INF-5140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-4200'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5140'));
+
+-- BIO-2400 requiere FIL-0110, BIO-0140 y QUI-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'BIO-2400'), (SELECT id FROM asignaturas WHERE codigo = 'FIL-0110')),
+((SELECT id FROM asignaturas WHERE codigo = 'BIO-2400'), (SELECT id FROM asignaturas WHERE codigo = 'BIO-0140')),
+((SELECT id FROM asignaturas WHERE codigo = 'BIO-2400'), (SELECT id FROM asignaturas WHERE codigo = 'QUI-0140'));
+
+-- INF-3290 requiere INF-4200
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-3290'), (SELECT id FROM asignaturas WHERE codigo = 'INF-4200'));
+
+-- INF-5200 requiere INF-4200
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5200'), (SELECT id FROM asignaturas WHERE codigo = 'INF-4200'));
+
+-- MAT-1430 requiere MAT-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-1430'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-0140'));
+
+-- MAT-3920 requiere MAT-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3920'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-0140'));
+
+-- INF-4250 requiere INF-3240
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-4250'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240'));
+
+-- INF-4260 requiere INF-3240 y INF-3220
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-4260'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-4260'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3220'));
+
+-- INF-5220 requiere INF-3240 y INF-5200
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5220'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5220'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5200'));
+
+-- MAT-3940 requiere MAT-3570
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3940'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-3570'));
+
+-- INF-5230 requiere INF-3240, INF-3290 y INF-4260
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5230'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5230'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3290')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5230'), (SELECT id FROM asignaturas WHERE codigo = 'INF-4260'));
+
+-- INF-5240 requiere INF-4260 y INF-3240
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5240'), (SELECT id FROM asignaturas WHERE codigo = 'INF-4260')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5240'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240'));
+
+-- INF-5250 requiere INF-5220
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5250'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5220'));
+
+-- FIL-1240 requiere FIL-0110
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'FIL-1240'), (SELECT id FROM asignaturas WHERE codigo = 'FIL-0110'));
+
+-- INF-5180 requiere INF-5150
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5180'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5150'));
+
+-- INF-5190 requiere INF-5180, INF-5160 y INF-5170
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5190'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5180')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5190'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5160')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5190'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5170'));
+
+-- INF-5290 requiere INF-3220 y INF-5140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5290'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3220')),
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5290'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5140'));
+
+-- INF-6100 requiere INF-5140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-6100'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5140'));
+
+-- MAT-3600 requiere MAT-3570
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3600'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-3570'));
+
+-- MAT-4940 requiere INF-5120 y MAT-3570
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-4940'), (SELECT id FROM asignaturas WHERE codigo = 'INF-5120')),
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-4940'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-3570'));
+
+-- FIS-1110 requiere FIS-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'FIS-1110'), (SELECT id FROM asignaturas WHERE codigo = 'FIS-0140'));
+
+-- FIS-2210 requiere FIS-0140
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'FIS-2210'), (SELECT id FROM asignaturas WHERE codigo = 'FIS-0140'));
+
+-- INF-4110 requiere INF-3240
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-4110'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240'));
+
+-- INF-4220 requiere INF-3240
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-4220'), (SELECT id FROM asignaturas WHERE codigo = 'INF-3240'));
+
+-- INF-5270 requiere INF-4250
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5270'), (SELECT id FROM asignaturas WHERE codigo = 'INF-4250'));
+
+-- INF-5280 requiere INF-4250
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'INF-5280'), (SELECT id FROM asignaturas WHERE codigo = 'INF-4250'));
+
+-- MAT-3930 requiere EST-2110 y MAT-3570
+INSERT INTO requisitos (asignatura_id, requisito_id)
+VALUES
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3930'), (SELECT id FROM asignaturas WHERE codigo = 'EST-2110')),
+((SELECT id FROM asignaturas WHERE codigo = 'MAT-3930'), (SELECT id FROM asignaturas WHERE codigo = 'MAT-3570'));

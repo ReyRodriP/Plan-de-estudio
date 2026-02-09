@@ -2,7 +2,7 @@ import { pool } from '../models/connection.js'
 import bcrypt, { hash } from 'bcrypt'
 import JsonWebToken from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura, registrarEstudiantes, loginEstudiantes } from '../models/subjectsModel.js'
+import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura, registrarEstudiantes, loginEstudiantes, inscribirMaterias, checkrequirement, checkSubjects } from '../models/subjectsModel.js'
 
 dotenv.config();
 
@@ -106,48 +106,23 @@ export const readySubject = async (req, res) => {
         console.log(err)
     }
 }
-//Funciones para usar a futuro
 
-// export const addSubject = async (req, res) => {
-//     try {
-//         const { Id, Codigo, Nombre, Creditos, Semestre } = req.body
-//         const result = await pool.query('INSERT INTO asignaturas (Id, Codigo, Nombre, Creditos, Semestre) values (?, ?, ?, ?, ?)', [Id, Codigo, Nombre, Creditos, Semestre]);
+// ---Manejo de las asignaturas inscritas---
+export const addSubject = async (req, res) => {
+  const { estudianteId, asignaturaId } = req.body
+  const checksubjects = await checkrequirement(estudianteId, asignaturaId)
+  const subjectOk = await checkSubjects(estudianteId, asignaturaId)
 
-//         res.json("Insertado correctamente")
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
+  if(checksubjects.length == 0 && subjectOk.length == 0){
+    const newSubject = await inscribirMaterias(estudianteId, asignaturaId)
+    return res.status(200).json({Message: "Asignatura inscrita"})
+  }
 
+  let nombres = checksubjects.map((nombre) => {
+    if(nombre.completada == null) {
+      return `Debe completar la asignatura ${nombre.codigo}`
+    }
 
-// export const updSubject = async (req, res) => {
-//     try {
-//         const { id } = req.params
-//         const { Codigo, Nombre, Creditos, Semestre } = req.body
-//         const [result] = await pool.query('UPDATE asignaturas SET Codigo = ?, Nombre = ?, Creditos = ?, Semestre = ? WHERE id = ?', [ Codigo, Nombre, Creditos, Semestre, id])
-
-//        if (result.affectedRows === 0) {
-//              return res.status(404).json({"Mensaje": "No fue encontrado"})
-//         }
-
-//         res.json({"Mensaje": `Mision cumplida, se altero la fila ${id}`})
-//     } catch (err) {
-//         res.status(500).json({"Mensaje": err})
-//     }
-// }
-
-// export const delSubject = async (req, res) => {
-//     try {
-//         const { id } = req.params
-//         const [result] = await pool.query("DELETE FROM asignaturas WHERE id = ?", [id])
-
-//         if (result.affectedRows === 0) {
-//              return res.status(404).json({"Mensaje": "No fue encontrado"})
-//         }
-
-//         res.json({"Mensaje": "Elemento eliminado correctamente"})
-         
-//     } catch (err) {
-//         res.status(500).json({"Mensaje": err})
-//     }
-// }
+  })
+  res.status(500).json({nombres})
+}

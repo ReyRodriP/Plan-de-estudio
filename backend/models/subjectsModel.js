@@ -29,4 +29,19 @@ export const CompletarAsignatura = async (completada, calificacion, id) => {
     const [result] = await pool.query('UPDATE asignaturas SET completada = ?, calificacion = ? WHERE id = ?', [ completada, calificacion, id ]) 
 }
    
+// ---Manejo de inscripciones---
 
+export const inscribirMaterias = async (estudianteId, asignaturaId) => {
+    const [result] = await pool.query('INSERT INTO calificaciones (estudiante_id, asignatura_id, estado) VALUES (?, ?, 1)', [estudianteId, asignaturaId])
+    return result
+}
+
+export const checkSubjects = async (estudianteId, asignaturaId) => {
+    const [result] = await pool.query('SELECT * FROM calificaciones WHERE estudiante_id = ? AND asignatura_id = ?', [estudianteId, asignaturaId])
+    return result
+}
+
+export const checkrequirement = async (estudianteId, asignatura_id) => {
+    const [result] = await pool.query('SELECT a.id AS requisito_id, a.codigo, a.nombre, a.semestre, c.calificacion, c.completada FROM requisitos r JOIN asignaturas a ON r.requisito_id = a.id LEFT JOIN calificaciones c ON c.asignatura_id = a.id AND c.estudiante_id = ? WHERE r.asignatura_id = ?;', [estudianteId, asignatura_id])
+    return result
+}

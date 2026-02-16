@@ -1,6 +1,6 @@
 const subjects = document.getElementById('data_subjects');
 const user = JSON.parse(localStorage.getItem('usuario'));
-const apiUrl = `http://localhost:3000/subjects/${user.id}`; 
+const apiUrl = `http://localhost:3000/subjects/`; 
 const modal = document.getElementById('modal-background');
 const profileBtn = document.getElementById('profile-image');
 const closeBtn = document.getElementById('close-btn');
@@ -8,7 +8,7 @@ const closeAccount = document.getElementById('logout');
 
 const options = { method: "GET" };
 
-fetch(apiUrl, options)
+fetch(apiUrl + user.id, options)
   .then(res => res.json())
   .then(response => showInfo(response));
 
@@ -67,11 +67,14 @@ function showInfo(response) {
     const grades = document.createElement('td');
     grades.innerText = a.calificacion;
     if (grades.innerText.trim() !== "") row.classList.add('finished');
+    if(a.inscrita !== null) row.classList.add('registered');
 
     const options = document.createElement('td');
     const button1 = document.createElement('button');
     button1.classList.add('bx', 'bx-pencil-sparkles');
     button1.title = "Inscribir";
+    button1.addEventListener('click', () => addSubjects(a.id))
+    
 
     const button2 = document.createElement('button');
     button2.classList.add('bx', 'bx-seal-check');
@@ -109,6 +112,17 @@ document.addEventListener('click', (e) => {
     header.classList.toggle('open', !isHidden);
   }
 });
+
+// --- Inscribir asignaturas ---
+async function addSubjects(id) {
+  await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ estudianteId: user.id, asignaturaId: id})
+  });
+
+  location.reload();
+}
 
 // --- Publicar calificaciones ---
 async function showGrades(id) {

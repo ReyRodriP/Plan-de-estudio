@@ -16,7 +16,7 @@ export const userSesion = async (nombre) => {
 }
 
 export const ListarAsignaturas = async (id) => {
-    const [result] = await pool.query('SELECT a.id AS id_asignatura, a.codigo, a.nombre AS nombre_asignatura, a.semestre, a.horas_teoricas, a.horas_practicas, a.creditos, c.calificacion, c.completada FROM asignaturas a LEFT JOIN calificaciones c ON a.id = c.asignatura_id AND c.estudiante_id = ? ORDER BY a.semestre, a.codigo;', [id])
+    const [result] = await pool.query(' SELECT a.id AS id_asignatura, a.codigo, a.nombre AS nombre_asignatura, a.semestre, a.horas_teoricas, a.horas_practicas, a.creditos, c.calificacion, c.completada, c.estado AS inscrita FROM asignaturas a LEFT JOIN calificaciones c ON a.id = c.asignatura_id AND c.estudiante_id = ? ORDER BY a.semestre, a.codigo;', [id])
     return result
 }
 

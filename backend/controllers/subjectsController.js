@@ -109,7 +109,8 @@ export const readySubject = async (req, res) => {
 
 // ---Manejo de las asignaturas inscritas---
 export const addSubject = async (req, res) => {
-  const { estudianteId, asignaturaId } = req.body
+  const { estudianteId } = req.params
+  const { asignaturaId } = req.body
   const checksubjects = await checkrequirement(estudianteId, asignaturaId)
   const subjectOk = await checkSubjects(estudianteId, asignaturaId)
 

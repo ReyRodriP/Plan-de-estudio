@@ -2,7 +2,7 @@ import { pool } from '../models/connection.js'
 import bcrypt, { hash } from 'bcrypt'
 import JsonWebToken from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura, registrarEstudiantes, loginEstudiantes, inscribirMaterias, checkrequirement, checkSubjects } from '../models/subjectsModel.js'
+import { ListarAsignaturas, ListarAsignaturasPorId, CompletarAsignatura, registrarEstudiantes, loginEstudiantes, inscribirMaterias, checkrequirement, checkSubjects, rebootSubjects } from '../models/subjectsModel.js'
 
 dotenv.config();
 
@@ -109,21 +109,44 @@ export const readySubject = async (req, res) => {
 
 // ---Manejo de las asignaturas inscritas---
 export const addSubject = async (req, res) => {
-  const { estudianteId } = req.params
-  const { asignaturaId } = req.body
-  const checksubjects = await checkrequirement(estudianteId, asignaturaId)
-  const subjectOk = await checkSubjects(estudianteId, asignaturaId)
+  const { estudianteId, asignaturaId } = req.body
 
-  if(checksubjects.length == 0 && subjectOk.length == 0){
-    const newSubject = await inscribirMaterias(estudianteId, asignaturaId)
-    return res.status(200).json({Message: "Asignatura inscrita"})
-  }
+  try {
+    const checksubjects = await checkrequirement(estudianteId, asignaturaId)
+    const subjectOk = await checkSubjects(estudianteId, asignaturaId)
 
-  let nombres = checksubjects.map((nombre) => {
-    if(nombre.completada == null) {
-      return `Debe completar la asignatura ${nombre.codigo}`
+    if(checksubjects.length == 0) {
+      if(subjectOk.length !== 0) {
+        if(subjectOk[0].estado == 0) {
+          const newSubject = await inscribirMaterias(estudianteId, asignaturaId)
+          return res.status(200).json({Mensaje: "Asignatura inscrita"})
+        }
+        return res.status(500).json('Esta asignatura ya esta inscrita')
+      }
+      const newSubject = await inscribirMaterias(estudianteId, asignaturaId)
+      return res.status(200).json({Mensaje: 'Asignatura inscrita'})
     }
+    
+    let nombres = checksubjects.map((nombre) => {
+      if(nombre.completada == null || nombre.completada == 0) {
+        return `Debe completar la asignatura ${nombre.codigo}`
+      }
 
-  })
-  res.status(500).json({nombres})
+    })
+    res.status(500).json({nombres})
+  } catch (err) {
+    res.status(500).json({ Mensaje: "Error al inscribir la asignatura" });
+  }
 }
+
+// ---Reinicio de valores de asignaturas--- //
+
+export const defaultSubject = async (req, res) => {
+  const { estudianteId, asignaturaId } = req.body;
+  const subjectOk = await checkSubjects(estudianteId, asignaturaId);
+
+  if(subjectOk.length == 0 || subjectOk[0].estado === 0) return res.status(500).json({Mensaje: 'Sin nada que cambiar'})
+    
+  const reboot = await rebootSubjects(estudianteId, asignaturaId);
+  res.status(200).json({Mensaje: 'Listo'});
+} 

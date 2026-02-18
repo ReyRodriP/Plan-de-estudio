@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getSubject, getByIdSubject, readySubject, Register, logIn, addSubject} from "../controllers/subjectsController.js"
+import { getSubject, getByIdSubject, readySubject, Register, logIn, addSubject, defaultSubject} from "../controllers/subjectsController.js"
 import { viewLogin, viewSubjects, viewRegister } from "../controllers/viewsController.js";
 import { onlyAdmin, onlyPublic } from "../middlewares/authorization.js";
 const router = Router();
@@ -25,6 +25,9 @@ router.put('/subject/:id', readySubject)
 
 //Endpoints para inscribir y publicar
 router.post('/subjects', addSubject)
+
+//Endpoints para reiniciar materias
+router.post('/subject', defaultSubject)
 
 // router.post('/subject', addSubject)
 

@@ -67,23 +67,24 @@ function showInfo(response) {
     const grades = document.createElement('td');
     grades.innerText = a.calificacion;
     if (grades.innerText.trim() !== "") row.classList.add('finished');
-    if(a.inscrita !== null) row.classList.add('registered');
+    if (a.estado !== null && a.estado !== 0) row.classList.add('registered');
 
     const options = document.createElement('td');
     const button1 = document.createElement('button');
     button1.classList.add('bx', 'bx-pencil-sparkles');
     button1.title = "Inscribir";
-    button1.addEventListener('click', () => addSubjects(a.id))
+    button1.addEventListener('click', () => addSubjects(a.id_asignatura))
     
 
     const button2 = document.createElement('button');
     button2.classList.add('bx', 'bx-seal-check');
     button2.title = "Publicar";
-    button2.addEventListener('click', () => showGrades(a.id));
+    button2.addEventListener('click', () => showGrades(a.id_asignatura));
 
     const button3 = document.createElement('button');
     button3.classList.add('bx', 'bx-rotate-ccw');
     button3.title = "Reiniciar";
+    button3.addEventListener('click', () => rebootSubjects(a.id_asignatura))
 
     options.append(button1, button2, button3);
     row.append(code, name, teoricHours, practicHours, credits, grades, options);
@@ -134,6 +135,17 @@ async function showGrades(id) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ completada: 1, calificacion: parseFloat(cal) })
   });
+
+  location.reload();
+}
+
+// ---Reiniciar valores ---
+async function rebootSubjects(id) {
+  await fetch(`http://localhost:3000/subject/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ estudianteId: user.id, asignaturaId: id})
+  })
 
   location.reload();
 }
